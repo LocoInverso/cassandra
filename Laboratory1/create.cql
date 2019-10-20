@@ -1,49 +1,49 @@
 CREATE KEYSPACE IF NOT EXISTS lab1
 WITH replication = {
 	'class' : 'SimpleStrategy',
-	'replication_factor' : 4
+	'replication_factor' : 2
 };
 
-CREATE TYPE lab1.student_info (
-	student_firtname text,
-	student_lastname text,
-	student_email text,
-	student_phone text,
-	student_password text	
+--CREATE TYPE lab1.student_info (
+--	student_firstname text,
+--	student_lastname text,
+--	student_patronym text,
+--	student_email text,
+--	student_phone text,
+--	student_password text	
+--);
+
+CREATE TYPE lab1.search_data (
+	s_search_date timestamp,
+	s_search_info text
 );
+
+CREATE TYPE lab1.discipline_search_results (
+	d_search_date timestamp,
+	d_search_info text
+);
+
+--CREATE TYPE lab1.discipline_data (
+--	date_added timestamp,
+--	date_updated timestamp,
+--	data set<text>
+--);
 
 CREATE TABLE IF NOT EXISTS lab1."Student" (
-	student_spec text,
-	student_course int,
-	student_group text,
-	student FROZEN<student_info>,
+	s_search_tag text,
+	s_search_time timestamp,
+	student_spec int,
 	student_id int,
-	student_search_history set<text>,
-	PRIMARY KEY ((student_spec), student_course, student_group, student_id)	
-);
-
-CREATE TABLE IF NOT EXISTS lab1."Search" (
-	search_id int,
-	search_tag list<text>,
-	search_data map<text, timestamp>,
-	PRIMARY KEY (search_id)
+	search_data map<int,frozen<search_data>>,
+	PRIMARY KEY ((s_search_tag, student_spec, student_id), s_search_time)
 );
 
 CREATE TABLE IF NOT EXISTS lab1."Discipline" (
-	discipline_id int,
-	discipline_spec text,
-	discipline_tag list<text>,
-	discipline_date_update timestamp,
-	discipline_data set<text>,
-	PRIMARY KEY (discipline_id) 
+	d_search_tag text,
+	d_search_time timestamp,
+	discipline_spec_id int,
+	discipline_name text,
+	discipline_data set<frozen<map<timestamp,frozen<map<text,set<text>>>>>>,
+	discipline_search_results set<frozen<discipline_search_results>>,
+	PRIMARY KEY ((d_search_tag, discipline_spec_id), d_search_time) 
 );
-
-CREATE TABLE IF NOT EXISTS lab1."Search_result" (
-	id_result int,
-	result_data set<text>,
-	sililar_result list<text>,
-	PRIMARY KEY (id_result) 
-);
-
-
-
