@@ -1,5 +1,3 @@
 DROP KEYSPACE IF EXISTS lab1;
 DROP TABLE IF EXISTS lab1."Student";
-DROP TABLE IF EXISTS lab1."Search";
 DROP TABLE IF EXISTS lab1."Discipline";
-DROP TABLE IF EXISTS lab1."Search_result";
